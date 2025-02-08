@@ -35,9 +35,6 @@ rm -rf ~/.cache/*
 info "Menginstall aplikasi yang direkomendasikan..."
 pkg install -y tmux ranger neovim git termux-api proot-distro openssh
 
-info "Menginstall Termux:Styling untuk kustomisasi tampilan..."
-pkg install -y termux-styling
-
 # 3. Optimasi Tampilan
 info "Menginstall font Hack untuk tampilan yang lebih baik..."
 pkg install -y font-hack
