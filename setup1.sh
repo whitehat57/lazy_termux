@@ -15,18 +15,6 @@ success() {
 info "Memperbarui dan mengupgrade paket sistem..."
 pkg update -y && pkg upgrade -y
 
-info "Membuat swap file untuk optimasi RAM..."
-if [ ! -f $HOME/swapfile ]; then
-  dd if=/dev/zero of=$HOME/swapfile bs=1M count=1024
-  chmod 600 $HOME/swapfile
-  mkswap $HOME/swapfile
-  swapon $HOME/swapfile
-  echo 'swapon $HOME/swapfile' >> ~/.zshrc
-  success "Swap file berhasil dibuat dan diaktifkan."
-else
-  info "Swap file sudah ada, melewati pembuatan swap file."
-fi
-
 info "Membersihkan cache dan file tidak perlu..."
 pkg clean
 rm -rf ~/.cache/*
