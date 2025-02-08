@@ -16,10 +16,16 @@ info "Memperbarui dan mengupgrade paket sistem..."
 pkg update -y && pkg upgrade -y
 
 info "Membuat swap file untuk optimasi RAM..."
-dd if=/dev/zero of=$HOME/swapfile bs=1M count=1024
-mkswap $HOME/swapfile
-swapon $HOME/swapfile
-echo 'swapon $HOME/swapfile' >> ~/.zshrc
+if [ ! -f $HOME/swapfile ]; then
+  dd if=/dev/zero of=$HOME/swapfile bs=1M count=1024
+  chmod 600 $HOME/swapfile
+  mkswap $HOME/swapfile
+  swapon $HOME/swapfile
+  echo 'swapon $HOME/swapfile' >> ~/.zshrc
+  success "Swap file berhasil dibuat dan diaktifkan."
+else
+  info "Swap file sudah ada, melewati pembuatan swap file."
+fi
 
 info "Membersihkan cache dan file tidak perlu..."
 pkg clean
@@ -76,10 +82,10 @@ info "Menyiapkan Python Virtual Environment..."
 python -m venv $HOME/.venv
 
 info "Menginstall dan mengupgrade Python tools..."
-pip install --upgrade pip wheel setuptools
+$HOME/.venv/bin/pip install --upgrade pip wheel setuptools
 
 info "Menginstall library Python untuk cybersecurity..."
-pip install scapy pycryptodome cryptography paramiko impacket requests beautifulsoup4 colorama rich pwntools pyOpenSSL dnspython ipwhois shodan
+$HOME/.venv/bin/pip install scapy pycryptodome cryptography paramiko impacket requests beautifulsoup4 colorama rich pwntools pyOpenSSL dnspython ipwhois shodan
 
 # 6. Finalisasi
 success "Instalasi selesai!"
